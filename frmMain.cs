@@ -14,7 +14,9 @@ namespace ArenaGameTool
 {
     public partial class frmMain : Form
     {
-        private SqlConnection m_dbConn = null; 
+        private SqlConnection m_dbConn = null;
+        private int m_changeCol = -1;
+        private int m_changeRow = -1;
         public frmMain()
         {
             InitializeComponent();
@@ -332,6 +334,116 @@ namespace ArenaGameTool
                 MessageBox.Show("失败:" + ex.ToString());
             }
             btnInXls.Enabled = true;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if ( m_changeCol < 0 ||  m_changeRow  < 0)
+            {
+                MessageBox.Show("请先编辑内容！");
+                return;
+            }
+            string sqlUp = "update " + selectTable.Text + " set ";
+
+            for (int col = 0; col < dataShow.ColumnCount; col++)
+            { 
+                if (col == m_changeCol)
+                {
+                    sqlUp += dataShow.Columns[col].HeaderText.ToString() + "=" + '@' + dataShow.Columns[col].HeaderText.ToString();
+                    break;
+
+                } 
+            }
+            sqlUp += " where ";
+            bool isSet = false;
+            string[] strCol = new string[dataShow.ColumnCount];
+            for (int col = 0; col < dataShow.ColumnCount; col++)
+            {
+                strCol[col] = '@' + dataShow.Columns[col].HeaderText.ToString();
+                if (col == m_changeCol)
+                    continue;
+                if (isSet)
+                {
+                    sqlUp += " and ";
+                }
+                isSet = true;
+                sqlUp += dataShow.Columns[col].HeaderText.ToString() + "=" + strCol[col];
+            }
+
+
+            SqlCommand cmd = new SqlCommand(sqlUp, m_dbConn);
+            string[] str = new string[dataShow.Rows.Count];
+            int count = 0; 
+            for (int i = 0; i < dataShow.Rows.Count; i++)
+            {
+                if (i == m_changeRow)
+                { 
+                    for (int j = 0; j < dataShow.ColumnCount; j++)
+                    {
+                        cmd.Parameters.AddWithValue(strCol[j], dataShow.Rows[i].Cells[j].Value.ToString());
+                    }
+
+                    try
+                    {
+                        count += cmd.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("失败:" + ex.ToString());
+                    }
+                    break;
+                }
+            }
+            m_changeCol = m_changeRow = -1;
+            MessageBox.Show(string.Format("影响条数={0}", count));
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+
+            string sqlDel = "delete from " + selectTable.Text + " where ";
+            string[] strCol = new string[dataShow.ColumnCount];
+            for (int col = 0; col < dataShow.ColumnCount; col++)
+            {
+                strCol[col] = '@' +  dataShow.Columns[col].HeaderText.ToString();
+                if(col != 0)
+                {
+                    sqlDel += " and ";
+                }
+                sqlDel += dataShow.Columns[col].HeaderText.ToString() + "=" + strCol[col]; 
+            }
+
+
+            SqlCommand cmd = new SqlCommand(sqlDel, m_dbConn);
+            string[] str = new string[dataShow.Rows.Count];
+            int count = 0;
+            for (int i = 0; i < dataShow.Rows.Count; i++)
+            {
+                if (dataShow.Rows[i].Selected == true)
+                {
+                    for(int j = 0; j < dataShow.ColumnCount; j ++)
+                    { 
+                        cmd.Parameters.AddWithValue(strCol[j], dataShow.Rows[i].Cells[j].Value.ToString());
+                    }
+
+                    try
+                    {
+                         count += cmd.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("失败:" + ex.ToString());
+                        break;
+                    }
+                }
+            }
+            MessageBox.Show(string.Format("影响条数={0}", count));
+        }
+
+        private void dataShow_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            m_changeCol = e.ColumnIndex;
+            m_changeRow = e.RowIndex;
         }
     }
 }
