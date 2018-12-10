@@ -40,19 +40,21 @@
             this.outPath = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.inOutCol = new System.Windows.Forms.TextBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.btnInXls = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.label18 = new System.Windows.Forms.Label();
             this.lable19 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.whereInfo = new System.Windows.Forms.TextBox();
             this.selectTable = new System.Windows.Forms.TextBox();
             this.selectInfo = new System.Windows.Forms.TextBox();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.inOutCol = new System.Windows.Forms.TextBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.btnInXls = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.label12 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
@@ -67,14 +69,12 @@
             this.col = new System.Windows.Forms.ComboBox();
             this.tableListT = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataShow)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox3.SuspendLayout();
-            this.tabPage2.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -112,7 +112,7 @@
             this.dataShow.RowTemplate.Height = 23;
             this.dataShow.Size = new System.Drawing.Size(797, 346);
             this.dataShow.TabIndex = 10;
-            this.dataShow.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataShow_CellValueChanged);
+            this.dataShow.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataShow_CellEndEdit);
             // 
             // btnQuery
             // 
@@ -190,72 +190,6 @@
             this.tabControl1.Size = new System.Drawing.Size(846, 542);
             this.tabControl1.TabIndex = 25;
             // 
-            // tabPage1
-            // 
-            this.tabPage1.Controls.Add(this.label5);
-            this.tabPage1.Controls.Add(this.outClose);
-            this.tabPage1.Controls.Add(this.outOpen);
-            this.tabPage1.Controls.Add(this.label2);
-            this.tabPage1.Controls.Add(this.label1);
-            this.tabPage1.Controls.Add(this.outTB);
-            this.tabPage1.Controls.Add(this.inOutCol);
-            this.tabPage1.Controls.Add(this.label9);
-            this.tabPage1.Controls.Add(this.groupBox3);
-            this.tabPage1.Controls.Add(this.outPath);
-            this.tabPage1.Controls.Add(this.groupBox1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(838, 489);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "数据导入导出";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(42, 198);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(41, 12);
-            this.label5.TabIndex = 7;
-            this.label5.Text = "字段：";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(298, 157);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(185, 12);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "注：默认使用数据库信息选择的表";
-            // 
-            // inOutCol
-            // 
-            this.inOutCol.Location = new System.Drawing.Point(96, 194);
-            this.inOutCol.Name = "inOutCol";
-            this.inOutCol.Size = new System.Drawing.Size(651, 21);
-            this.inOutCol.TabIndex = 8;
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.btnInXls);
-            this.groupBox3.Location = new System.Drawing.Point(418, 235);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(325, 57);
-            this.groupBox3.TabIndex = 13;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "导入";
-            // 
-            // btnInXls
-            // 
-            this.btnInXls.Location = new System.Drawing.Point(86, 20);
-            this.btnInXls.Name = "btnInXls";
-            this.btnInXls.Size = new System.Drawing.Size(102, 23);
-            this.btnInXls.TabIndex = 0;
-            this.btnInXls.Text = "执行";
-            this.btnInXls.UseVisualStyleBackColor = true;
-            this.btnInXls.Click += new System.EventHandler(this.btnInXls_Click);
-            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.button2);
@@ -275,6 +209,26 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "信息查询";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(490, 480);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(102, 23);
+            this.button2.TabIndex = 37;
+            this.button2.Text = "更新修改的记录";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(296, 480);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(102, 23);
+            this.button1.TabIndex = 36;
+            this.button1.Text = "删除选定记录";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // label18
             // 
@@ -323,6 +277,72 @@
             this.selectInfo.Name = "selectInfo";
             this.selectInfo.Size = new System.Drawing.Size(535, 21);
             this.selectInfo.TabIndex = 30;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.label5);
+            this.tabPage1.Controls.Add(this.outClose);
+            this.tabPage1.Controls.Add(this.outOpen);
+            this.tabPage1.Controls.Add(this.label2);
+            this.tabPage1.Controls.Add(this.label1);
+            this.tabPage1.Controls.Add(this.outTB);
+            this.tabPage1.Controls.Add(this.inOutCol);
+            this.tabPage1.Controls.Add(this.label9);
+            this.tabPage1.Controls.Add(this.groupBox3);
+            this.tabPage1.Controls.Add(this.outPath);
+            this.tabPage1.Controls.Add(this.groupBox1);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(838, 516);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "数据导入导出";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(42, 198);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(41, 12);
+            this.label5.TabIndex = 7;
+            this.label5.Text = "字段：";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(298, 157);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(185, 12);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "注：默认使用数据库信息选择的表";
+            // 
+            // inOutCol
+            // 
+            this.inOutCol.Location = new System.Drawing.Point(96, 194);
+            this.inOutCol.Name = "inOutCol";
+            this.inOutCol.Size = new System.Drawing.Size(651, 21);
+            this.inOutCol.TabIndex = 8;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.btnInXls);
+            this.groupBox3.Location = new System.Drawing.Point(418, 235);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(325, 57);
+            this.groupBox3.TabIndex = 13;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "导入";
+            // 
+            // btnInXls
+            // 
+            this.btnInXls.Location = new System.Drawing.Point(86, 20);
+            this.btnInXls.Name = "btnInXls";
+            this.btnInXls.Size = new System.Drawing.Size(102, 23);
+            this.btnInXls.TabIndex = 0;
+            this.btnInXls.Text = "执行";
+            this.btnInXls.UseVisualStyleBackColor = true;
+            this.btnInXls.Click += new System.EventHandler(this.btnInXls_Click);
             // 
             // label12
             // 
@@ -447,26 +467,6 @@
             this.label15.TabIndex = 31;
             this.label15.Text = "数据库：";
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(296, 480);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(102, 23);
-            this.button1.TabIndex = 36;
-            this.button1.Text = "删除选定记录";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(490, 480);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(102, 23);
-            this.button2.TabIndex = 37;
-            this.button2.Text = "更新选定记录";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -488,11 +488,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataShow)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.groupBox3.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);

@@ -338,6 +338,12 @@ namespace ArenaGameTool
 
         private void button2_Click(object sender, EventArgs e)
         {
+            if(whereInfo.Text == "")
+            {
+                MessageBox.Show("请输入查询条件！");
+                return; 
+            }
+
             if ( m_changeCol < 0 ||  m_changeRow  < 0)
             {
                 MessageBox.Show("请先编辑内容！");
@@ -345,42 +351,37 @@ namespace ArenaGameTool
             }
             string sqlUp = "update " + selectTable.Text + " set ";
 
-            for (int col = 0; col < dataShow.ColumnCount; col++)
-            { 
-                if (col == m_changeCol)
-                {
-                    sqlUp += dataShow.Columns[col].HeaderText.ToString() + "=" + '@' + dataShow.Columns[col].HeaderText.ToString();
-                    break;
-
-                } 
-            }
-            sqlUp += " where ";
             bool isSet = false;
             string[] strCol = new string[dataShow.ColumnCount];
             for (int col = 0; col < dataShow.ColumnCount; col++)
             {
-                strCol[col] = '@' + dataShow.Columns[col].HeaderText.ToString();
-                if (col == m_changeCol)
+                if (m_changeCol != col)
                     continue;
+                strCol[col] = '@' + dataShow.Columns[col].HeaderText.ToString();
                 if (isSet)
                 {
                     sqlUp += " and ";
                 }
                 isSet = true;
                 sqlUp += dataShow.Columns[col].HeaderText.ToString() + "=" + strCol[col];
+                break;
             }
+            sqlUp += " where ";
+            sqlUp += whereInfo.Text;
+            SqlCommand cmd = new SqlCommand(sqlUp, m_dbConn); 
 
-
-            SqlCommand cmd = new SqlCommand(sqlUp, m_dbConn);
+            int count = 0;
             string[] str = new string[dataShow.Rows.Count];
-            int count = 0; 
             for (int i = 0; i < dataShow.Rows.Count; i++)
             {
                 if (i == m_changeRow)
-                { 
+                {
                     for (int j = 0; j < dataShow.ColumnCount; j++)
                     {
+                        if (m_changeCol != j)
+                            continue;
                         cmd.Parameters.AddWithValue(strCol[j], dataShow.Rows[i].Cells[j].Value.ToString());
+                        break;
                     }
 
                     try
@@ -442,6 +443,12 @@ namespace ArenaGameTool
 
         private void dataShow_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
+
+        }
+
+        private void dataShow_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+
             m_changeCol = e.ColumnIndex;
             m_changeRow = e.RowIndex;
         }
