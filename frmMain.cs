@@ -8,7 +8,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.Sql;
-using System.Data.SqlClient;
+using System.Data.SqlClient; 
+using System.IO;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace ArenaGameTool
 {
@@ -33,12 +36,52 @@ namespace ArenaGameTool
             var bytes = System.Text.Encoding.Unicode.GetBytes(nickName);
             return Convert.ToBase64String(bytes);
         }
-         
-         
+
+        private string m_configPath = ".\\configDB.json";
+        void loadConfig()
+        {
+            try
+            {
+                if(!File.Exists(m_configPath))
+                {
+                    File.WriteAllText(m_configPath, "{}");  //\"ip\":,\"user\":,\"passwd\":
+                    return;
+                }
+                StreamReader file = File.OpenText(m_configPath);
+                JsonTextReader reader = new JsonTextReader(file); 
+                JObject jsonObject = (JObject)JToken.ReadFrom(reader); 
+                ip.Text = (string)jsonObject["ip"];
+                user.Text = (string)jsonObject["user"];
+                passwd.Text = (string)jsonObject["passwd"];
+                file.Close();
+
+            }
+            catch(Exception e)
+            { 
+                MessageBox.Show(e.ToString());
+            }
+        }
+        void unLoadConfig()
+        {
+            try
+            {
+                string json = File.ReadAllText(m_configPath);
+                dynamic jsonObj = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
+                jsonObj["ip"] = ip.Text;
+                jsonObj["user"] = user.Text;
+                jsonObj["passwd"] = passwd.Text;
+                string output = Newtonsoft.Json.JsonConvert.SerializeObject(jsonObj, Newtonsoft.Json.Formatting.Indented);
+                File.WriteAllText(m_configPath, output);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+        }
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-           // cboEnvironment.SelectedIndex = 0;           
+            loadConfig();
         }
 
         private void cboEnvironment_SelectedIndexChanged(object sender, EventArgs e)
@@ -68,6 +111,7 @@ namespace ArenaGameTool
                 m_dbConn = new SqlConnection(connectionString);
                 m_dbConn.Open();
                 ShowDB();
+                unLoadConfig();
             }
             catch (Exception ex)
             {
@@ -167,6 +211,32 @@ namespace ArenaGameTool
                 return;
             }
         }
+        private void ShowProc()
+        {
+            var cmd = new SqlCommand("select name from sysobjects where xtype='p'", m_dbConn);
+            try
+            {
+                var reader = cmd.ExecuteReader();
+                List<string> result = new List<string>();
+                 
+                while (reader.Read())
+                {
+                    result.Add(reader.GetString(0));
+                }
+                reader.Close();
+                proBox.Items.Clear();
+                if (result.Count() > 0)
+                {
+                    proBox.Items.AddRange(result.ToArray());
+                    proBox.SelectedIndex = 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ShowTable失败:" + ex.ToString());
+                return;
+            }
+        }
         private void ShowCol(string tableName)
         {
             var cmd = new SqlCommand("Select Name FROM SysColumns Where id = Object_Id('" + tableName + "')", m_dbConn);
@@ -208,15 +278,16 @@ namespace ArenaGameTool
             var cmd = new SqlCommand("use " + DBlist.Text, m_dbConn);
             try
             {
-                cmd.ExecuteNonQuery(); 
+                cmd.ExecuteNonQuery();
                 ShowTable();
+                ShowProc();
             }
             catch (Exception ex)
             {
                 MessageBox.Show("失败:" + ex.ToString());
                 return;
-            } 
-        }
+            }
+        } 
         //表
         private void tableList_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -340,7 +411,7 @@ namespace ArenaGameTool
         {
             if(whereInfo.Text == "")
             {
-                MessageBox.Show("请输入查询条件！");
+                MessageBox.Show("请输入条件！");
                 return; 
             }
 
@@ -398,8 +469,21 @@ namespace ArenaGameTool
             m_changeCol = m_changeRow = -1;
             MessageBox.Show(string.Format("影响条数={0}", count));
         }
-
         private void button1_Click_1(object sender, EventArgs e)
+        {
+            if (whereInfo.Text == "")
+            {
+                MessageBox.Show("请输入条件！");
+                return;
+            } 
+
+            string sqlDel = "delete from " + selectTable.Text + " where " + whereInfo.Text; 
+            SqlCommand cmd = new SqlCommand(sqlDel, m_dbConn);
+            int count = cmd.ExecuteNonQuery(); 
+            MessageBox.Show(string.Format("影响条数={0}", count));
+        }
+
+        private void button1_Click_1old(object sender, EventArgs e)
         {
 
             string sqlDel = "delete from " + selectTable.Text + " where ";
@@ -451,6 +535,28 @@ namespace ArenaGameTool
 
             m_changeCol = e.ColumnIndex;
             m_changeRow = e.RowIndex;
+        }   
+
+        private void DBlist_DropDown(object sender, EventArgs e)
+        {
+            ComboBox senderComboBox = (ComboBox)sender;
+            int width = senderComboBox.DropDownWidth;
+            Graphics g = senderComboBox.CreateGraphics();
+            Font font = senderComboBox.Font;
+            int vertScrollBarWidth =
+                (senderComboBox.Items.Count > senderComboBox.MaxDropDownItems)
+                ? SystemInformation.VerticalScrollBarWidth : 0;
+            int newWidth;
+            foreach (string s in ((ComboBox)sender).Items)
+            {
+                newWidth = (int)g.MeasureString(s, font).Width
+                    + vertScrollBarWidth;
+                if (width < newWidth)
+                {
+                    width = newWidth;
+                }
+            }
+            senderComboBox.DropDownWidth = width;
         }
     }
 }

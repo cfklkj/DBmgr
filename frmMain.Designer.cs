@@ -69,6 +69,8 @@
             this.col = new System.Windows.Forms.ComboBox();
             this.tableListT = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
+            this.proBox = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataShow)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -226,7 +228,7 @@
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(102, 23);
             this.button1.TabIndex = 36;
-            this.button1.Text = "删除选定记录";
+            this.button1.Text = "删除记录";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
@@ -235,9 +237,9 @@
             this.label18.AutoSize = true;
             this.label18.Location = new System.Drawing.Point(27, 93);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(65, 12);
+            this.label18.Size = new System.Drawing.Size(41, 12);
             this.label18.TabIndex = 35;
-            this.label18.Text = "查询条件：";
+            this.label18.Text = "条件：";
             // 
             // lable19
             // 
@@ -368,7 +370,6 @@
             this.user.Name = "user";
             this.user.Size = new System.Drawing.Size(142, 21);
             this.user.TabIndex = 26;
-            this.user.Text = "sa";
             // 
             // passwd
             // 
@@ -376,7 +377,6 @@
             this.passwd.Name = "passwd";
             this.passwd.Size = new System.Drawing.Size(142, 21);
             this.passwd.TabIndex = 27;
-            this.passwd.Text = "weile_1234";
             // 
             // ip
             // 
@@ -384,7 +384,6 @@
             this.ip.Name = "ip";
             this.ip.Size = new System.Drawing.Size(142, 21);
             this.ip.TabIndex = 28;
-            this.ip.Text = "59.110.170.57";
             // 
             // link
             // 
@@ -400,33 +399,37 @@
             // 
             this.tableList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.tableList.FormattingEnabled = true;
-            this.tableList.Location = new System.Drawing.Point(253, 25);
+            this.tableList.Location = new System.Drawing.Point(478, 27);
             this.tableList.Name = "tableList";
             this.tableList.Size = new System.Drawing.Size(141, 20);
             this.tableList.TabIndex = 29;
+            this.tableList.DropDown += new System.EventHandler(this.DBlist_DropDown);
             this.tableList.SelectedIndexChanged += new System.EventHandler(this.tableList_SelectedIndexChanged);
             // 
             // DBlist
             // 
             this.DBlist.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.DBlist.FormattingEnabled = true;
-            this.DBlist.Location = new System.Drawing.Point(76, 24);
+            this.DBlist.Location = new System.Drawing.Point(76, 27);
             this.DBlist.Name = "DBlist";
             this.DBlist.Size = new System.Drawing.Size(121, 20);
             this.DBlist.TabIndex = 30;
+            this.DBlist.DropDown += new System.EventHandler(this.DBlist_DropDown);
             this.DBlist.SelectedIndexChanged += new System.EventHandler(this.DBlist_SelectedIndexChanged);
             // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.label16);
             this.groupBox2.Controls.Add(this.col);
+            this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.tableListT);
             this.groupBox2.Controls.Add(this.label15);
+            this.groupBox2.Controls.Add(this.proBox);
             this.groupBox2.Controls.Add(this.tableList);
             this.groupBox2.Controls.Add(this.DBlist);
             this.groupBox2.Location = new System.Drawing.Point(25, 47);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(748, 65);
+            this.groupBox2.Size = new System.Drawing.Size(842, 65);
             this.groupBox2.TabIndex = 29;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "数据库信息";
@@ -434,7 +437,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(420, 30);
+            this.label16.Location = new System.Drawing.Point(645, 31);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(29, 12);
             this.label16.TabIndex = 34;
@@ -444,15 +447,16 @@
             // 
             this.col.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.col.FormattingEnabled = true;
-            this.col.Location = new System.Drawing.Point(455, 28);
+            this.col.Location = new System.Drawing.Point(680, 27);
             this.col.Name = "col";
             this.col.Size = new System.Drawing.Size(141, 20);
             this.col.TabIndex = 33;
+            this.col.DropDown += new System.EventHandler(this.DBlist_DropDown);
             // 
             // tableListT
             // 
             this.tableListT.AutoSize = true;
-            this.tableListT.Location = new System.Drawing.Point(218, 27);
+            this.tableListT.Location = new System.Drawing.Point(443, 31);
             this.tableListT.Name = "tableListT";
             this.tableListT.Size = new System.Drawing.Size(29, 12);
             this.tableListT.TabIndex = 32;
@@ -461,11 +465,31 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(18, 28);
+            this.label15.Location = new System.Drawing.Point(18, 31);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(53, 12);
             this.label15.TabIndex = 31;
             this.label15.Text = "数据库：";
+            // 
+            // proBox
+            // 
+            this.proBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.proBox.FormattingEnabled = true;
+            this.proBox.Location = new System.Drawing.Point(283, 27);
+            this.proBox.Name = "proBox";
+            this.proBox.Size = new System.Drawing.Size(141, 20);
+            this.proBox.TabIndex = 29;
+            this.proBox.DropDown += new System.EventHandler(this.DBlist_DropDown);
+            this.proBox.SelectedIndexChanged += new System.EventHandler(this.tableList_SelectedIndexChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(216, 31);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(65, 12);
+            this.label3.TabIndex = 32;
+            this.label3.Text = "存储过程：";
             // 
             // frmMain
             // 
@@ -543,6 +567,8 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox proBox;
     }
 }
 
